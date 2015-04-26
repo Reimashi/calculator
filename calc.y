@@ -82,8 +82,8 @@ condicion: expresion		     { $$ = $1; }
   | expresion IGUAL expresion        { $$ = $1==$3; }
 ;
 
-ifthenelse: IF'('condicion')' THEN expresion ELSE expresion { if($3){$$=$6;}else{$$=$8;};}
-
+ifthenelse: IF '(' condicion ')' THEN expresion ELSE expresion { if($3) { $$ = $6; } else { $$ = $8; } }
+  | '(' condicion THEN expresion ELSE expresion ')' { if($2) { $$ = $4; } else { $$ = $6; } }
 ;
 
 %%

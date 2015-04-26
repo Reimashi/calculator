@@ -35,7 +35,9 @@ cos|COS                  	return (COSENO);
 tan|TAN         	        return (TANGENTE);
 if|IF		                return (IF);
 then|THEN	                return (THEN);
+"?"				return (THEN);
 else|ELSE	                return (ELSE);
+":"				return (ELSE);
 
 "+"|"-"|"*"|"/"|"="             return (yytext[0]);
 

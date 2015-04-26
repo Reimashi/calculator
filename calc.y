@@ -71,8 +71,7 @@ expresion: CONSTANTE_REAL            { $$ = $1; }
   | IF '(' condicion ')' THEN expresion ELSE expresion  { if($3) { $$ = $6; } else { $$ = $8; } }
 ;
 
-condicion: expresion		     { $$ = $1; }
-  | expresion MENORQUE expresion     { $$ = $1<$3; }
+condicion: expresion MENORQUE expresion     { $$ = $1<$3; }
   | expresion MAYORQUE expresion     { $$ = $1>$3; }
   | expresion MAYORIGUAL expresion   { $$ = $1>=$3; }
   | expresion MENORIGUAL expresion   { $$ = $1<=$3; }

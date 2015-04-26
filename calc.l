@@ -30,7 +30,7 @@ LETRA [A-Za-z]
                                   return (CONSTANTE_REAL);
                                 }
 
-sen|SEN		                return (SENO);  
+sen|SEN		                return (SENO);
 cos|COS                  	return (COSENO);
 tan|TAN         	        return (TANGENTE);
 if|IF		                return (IF);
@@ -39,7 +39,7 @@ then|THEN	                return (THEN);
 else|ELSE	                return (ELSE);
 ":"				return (ELSE);
 
-"+"|"-"|"*"|"/"|"="             return (yytext[0]);
+"+"|"-"|"*"|"/"|"="|"^"         return (yytext[0]);
 
 "\n"                            return (yytext[0]);
 

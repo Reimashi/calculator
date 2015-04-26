@@ -18,7 +18,7 @@ DICCIONARIO diccionario; /* variable global para el diccionario */
 %token <texto> SENO
 %token <texto> COSENO
 %token <texto> TANGENTE
-%token <texto> MENORQUE 
+%token <texto> MENORQUE
 %token <texto> MAYORQUE
 %token <texto> MENORIGUAL
 %token <texto> MAYORIGUAL
@@ -38,7 +38,6 @@ DICCIONARIO diccionario; /* variable global para el diccionario */
 
 %type <valor_real> expresion
 %type <valor_entero> condicion
-%type <valor_real> ifthenelse
 
 %%
 
@@ -50,7 +49,6 @@ lineas: /* cadena vacia */
 linea: '\n'
   | IDENTIFICADOR '=' expresion '\n' { insertar_diccionario(&diccionario, $1, $3); }
   | expresion '\n'                   { printf ("resultado: %f\n", $1); }
-  | ifthenelse '\n'		     { printf ("resultado: %f\n", $1); }
   | error '\n'                       { yyerrok;}
 ;
 
@@ -69,6 +67,8 @@ expresion: CONSTANTE_REAL            { $$ = $1; }
   | COSENO '(' expresion ')'         { $$ = cos($3); }
   | TANGENTE '(' expresion ')'       { $$ = tan($3); }
   | '-' expresion                    { $$ = -$2; }
+  | condicion THEN expresion ELSE expresion             { if($1) { $$ = $3; } else { $$ = $5; } }
+  | IF '(' condicion ')' THEN expresion ELSE expresion  { if($3) { $$ = $6; } else { $$ = $8; } }
 ;
 
 condicion: expresion		     { $$ = $1; }
@@ -82,10 +82,6 @@ condicion: expresion		     { $$ = $1; }
   | expresion IGUAL expresion        { $$ = $1==$3; }
 ;
 
-ifthenelse: IF '(' condicion ')' THEN expresion ELSE expresion { if($3) { $$ = $6; } else { $$ = $8; } }
-  | '(' condicion THEN expresion ELSE expresion ')' { if($2) { $$ = $4; } else { $$ = $6; } }
-;
-
 %%
 
 int main(int argc, char** argv) {
@@ -97,4 +93,3 @@ int main(int argc, char** argv) {
 yyerror (char *s) { printf ("%s\n", s); }
 
 int yywrap() { return 1; }
-

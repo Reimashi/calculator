@@ -63,22 +63,22 @@ expresion: CONSTANTE_REAL            { $$ = $1; }
   | expresion '*' expresion          { $$ = $1 * $3; }
   | expresion '/' expresion          { $$ = $1 / $3; }
   | expresion '^' expresion          { $$ = pow($1, $3); }
+  | expresion MENORQUE expresion     { if ($1 < $3) { $$ = 1.0; } else { $$ = 0.0; } }
+  | expresion MAYORQUE expresion     { if ($1 > $3) { $$ = 1.0; } else { $$ = 0.0; } }
+  | expresion MAYORIGUAL expresion   { if ($1 >= $3) { $$ = 1.0; } else { $$ = 0.0; } }
+  | expresion MENORIGUAL expresion   { if ($1 <= $3) { $$ = 1.0; } else { $$ = 0.0; } }
+  | expresion DIFERENTE expresion    { if ($1 != $3) { $$ = 1.0; } else { $$ = 0.0; } }
+  | expresion IGUAL expresion        { if ($1 == $3) { $$ = 1.0; } else { $$ = 0.0; } }
   | SENO '(' expresion ')'           { $$ = sin($3); }
   | COSENO '(' expresion ')'         { $$ = cos($3); }
   | TANGENTE '(' expresion ')'       { $$ = tan($3); }
   | '-' expresion                    { $$ = -$2; }
   | condicion THEN expresion ELSE expresion             { if($1) { $$ = $3; } else { $$ = $5; } }
-  | IF '(' condicion ')' THEN expresion ELSE expresion  { if($3) { $$ = $6; } else { $$ = $8; } }
 ;
 
-condicion: expresion MENORQUE expresion     { $$ = $1<$3; }
-  | expresion MAYORQUE expresion     { $$ = $1>$3; }
-  | expresion MAYORIGUAL expresion   { $$ = $1>=$3; }
-  | expresion MENORIGUAL expresion   { $$ = $1<=$3; }
-  | expresion O expresion	     { $$ = $1||$3; }
-  | expresion Y expresion	     { $$ = $1&&$3; }
-  | expresion DIFERENTE expresion    { $$ = $1!=$3; }
-  | expresion IGUAL expresion        { $$ = $1==$3; }
+condicion: expresion { if ($1) { $$ = 1.0; } else { $$ = 0.0; } }
+  | condicion Y condicion   { if ($1 && $3) { $$ = 1.0; } else { $$ = 0.0; } }
+  | condicion O condicion   { if ($1 || $3) { $$ = 1.0; } else { $$ = 0.0; } }
 ;
 
 %%
